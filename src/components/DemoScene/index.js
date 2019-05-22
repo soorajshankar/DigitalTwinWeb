@@ -75,6 +75,7 @@ class DemoScene extends React.Component {
 	}
 
 	updateScene = () => {
+		return console.log("onAnim")
 		if (this.state.groupRotation) {
 			let { x, y, z } = this.state.groupRotation;
       this.setState({ groupRotation: new THREE.Euler(0,y+0.1,0) });
