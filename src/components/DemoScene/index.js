@@ -12,9 +12,10 @@ class DemoScene extends React.Component {
 		this.state = {
 			cameraPosition: new THREE.Vector3(0, 300, 750),
 			groupRotation: new THREE.Euler(0, 0, 0),
-			scene: {}
-    };
-    // this.updateScene=_.debounce(this.updateScene.bind(this),100)
+			scene: {},
+		};
+		this.lastRendered=new Date()
+		// this.updateScene=_.debounce(this.updateScene.bind(this),100)
 	}
 
 	componentDidMount() {
@@ -75,11 +76,10 @@ class DemoScene extends React.Component {
 	}
 
 	updateScene = () => {
-		return console.log("onAnim")
 		if (this.state.groupRotation) {
 			let { x, y, z } = this.state.groupRotation;
-      this.setState({ groupRotation: new THREE.Euler(0,y+0.1,0) });
-      window.state=this
+			this.setState({ groupRotation: new THREE.Euler(0, y + 0.1, 0) });
+			window.state = this;
 			return;
 		}
 		let groupRotationY = this.state.groupRotation
@@ -99,6 +99,13 @@ class DemoScene extends React.Component {
 			groupRotation
 		});
 	};
+	shouldComponentUpdate(nextProps, nextState) {
+		if (new Date() - this.lastRendered > 100) {
+			this.lastRendered = new Date();
+			return true;
+		}
+		return false;
+	}
 
 	render() {
 		let width = window.innerWidth;
@@ -177,8 +184,6 @@ class DemoScene extends React.Component {
 							lookAt={new THREE.Vector3(0, 0, 0)}
 							intensity={0.375}
 						/>
-
-
 					</group>
 
 					<group name="exampleGroup" rotation={this.state.groupRotation}>
